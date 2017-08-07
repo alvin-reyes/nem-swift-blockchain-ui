@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
 import {
   AccountHttp, Address, MultisigTransaction, NEMLibrary, NetworkTypes, Transaction,
   TransactionTypes
@@ -10,21 +12,63 @@ const accountHttp = new AccountHttp({
   port: 7895
 });
 
-
-NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
+NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
 @Component({
   selector: 'app-alltransaction',
   templateUrl: './alltransaction.component.html',
-  styleUrls: ['./alltransaction.component.css']
+  styleUrls: ['./alltransaction.component.css'],
+  providers: [NgbModal],
+  styles: [`
+    .dark-modal .modal-content {
+      background-color: #292b2c;
+      color: white;
+      width:100%;
+    }
+    .dark-modal .close {
+      color: white;
+    }
+  `]
 })
 export class AlltransactionComponent implements OnInit {
 
+  closeResult: string;
   address: string;
+  privatekey: string;
   transactions = [];
+  modalOptions: NgbModalOptions;
 
-  constructor() { }
+  //  modal variables.
+  decodedMessage: string;
+  data = {};
+  constructor(private modalService: NgbModal, private http: HttpClient) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  decodeMessage(trans) {
+    this.data = { 'sender': trans.signer.publicKey, 'receipt': this.privatekey, 'swift': trans.message.payload };
+    this.http.post('http://localhost:8013/nemswiftsvc/transaction/decode', this.data)
+      .subscribe(data => {
+        this.decodedMessage = data['decodedMessage'];
+      });
+  }
+
+  private handleErrorPromise(error: Response | any) {
+    console.error(error);
+    return Promise.reject(error.message || error);
+  }
+
+  private extractData(res: Response) {
+    console.log(res);
+    this.decodedMessage = res.toString();
+  }
+
+  open(content, trans) {
+    this.decodeMessage(trans);
+    this.modalService.open(content,{size:'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   getTransaction() {
@@ -39,6 +83,16 @@ export class AlltransactionComponent implements OnInit {
         console.log('\n\n>>>>>>>>>>>>');
         console.log('Just Multisig', x);
       });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }
 

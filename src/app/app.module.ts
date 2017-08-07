@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { SendnemComponent } from './sendnem/sendnem.component';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AlltransactionComponent } from './alltransaction/alltransaction.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AlltransactionComponent } from './alltransaction/alltransaction.compone
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot([
       {
         path: '',

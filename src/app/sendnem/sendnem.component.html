@@ -1,24 +1,20 @@
 
 <div class="form-group">
-	<label for="senderAddress">Sender Public Key</label> <input [(ngModel)]="sender" type="text"
+	<label for="senderAddress">Sender Private Key</label> <input [(ngModel)]="sender" type="text"
 		class="form-control" id="senderAddress"
-		aria-describedby="senderAddressHelp" placeholder="Sender Public Key">
-	<small id="senderAddressHelp" 
-		class="form-text text-muted">We'll never share</small>
+		aria-describedby="senderAddressHelp" placeholder="Sender Public Key" required="required">
 </div>
 <div class="form-group">
-	<label for="senderAddress">Recipient Public Key</label> <input
+	<label for="senderAddress">Recipient Address</label> <input
 		type="text" [(ngModel)]="recipient" class="form-control" id="recipientAddress"
 		aria-describedby="recipientAddressHelp"
-		placeholder="Recipient Public Key"> <small
-		id="recipientAddressHelp" 
-		class="form-text text-muted">We'll never share</small>
+		placeholder="Recipient Address" required="required">
 </div>
 
 <div class="form-group">
 	<label for="exampleTextarea">Swift Message</label>
 	<textarea class="form-control" [(ngModel)]="swiftMessage"
-		id="exampleTextarea" rows="10"></textarea>
+		id="exampleTextarea" rows="10" required="required"></textarea>
 </div>
 
 <button type="submit" class="btn btn-primary" (click)="sendNem()">Submit</button>

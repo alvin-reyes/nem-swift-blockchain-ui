@@ -1,25 +1,51 @@
+<ng-template #content let-c="close" let-d="dismiss">
+<div class="modal-dialog modal-lg">
+	<div class="modal-header">
+		<h4 class="modal-title">Your Swift Message</h4>
+		<button type="button" class="close" aria-label="Close"
+			(click)="d('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<p>{{decodedMessage}}</p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary"
+			(click)="c('Close click')">Close</button>
+	</div>
+</div>
+</ng-template>
 
 <div class="form-group">
-	<input type="text" class="form-control" [(ngModel)]="address" placeholder="Address">
+	<input type="text" class="form-control" [(ngModel)]="address"
+		placeholder="Your Address">
 </div>
-<button type="submit" class="btn btn-default" (click)="getTransaction()">Get Transaction Messages</button>
+<div class="form-group">
+	<input type="text" class="form-control" [(ngModel)]="privatekey"
+		placeholder="Your Private Key">
+</div>
+<button type="submit" class="btn btn-default" (click)="getTransaction()">Get
+	Transaction Messages</button>
 <div class="panel panel-default">
-  <!-- Default panel contents -->
-  <br/>
+	<!-- Default panel contents -->
+	<br />
 
-  <!-- Table -->
-  <table class="table">
-    <tr>
-    	<th>Amount</th>
-    	<th>Message</th>
-    	<th>Date</th>
-    	<th>Action</th>
-    </tr>
-        <tr *ngFor="let trans of transactions">
-    	<td>{{trans.amount}}</td>
-    	<td>{{trans.message.payload.substr(0,10)}}</td>
-    	<td>{{trans.timeWindow.timeStamp}}</td>
-    	<td><button class="btn btn-secondary" (click)="encodeUngzip(trans)" value="Decode">Decode</button></td>
-    </tr>
-  </table>
+	<!-- Table -->
+	<table class="table">
+		<tr>
+			<th>Message</th>
+			<th>Date</th>
+			<th>Action</th>
+		</tr>
+		<tr *ngFor="let trans of transactions">
+			<td>{{trans.message.payload.substr(0,50)}}</td>
+			<td>{{trans.timeWindow.timeStamp}}</td>
+			<td><button class="btn btn-secondary"
+					(click)="open(content,trans)" value="Decode">Decode</button></td>
+		</tr>
+	</table>
+
+
 </div>
