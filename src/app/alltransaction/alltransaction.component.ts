@@ -19,10 +19,13 @@ NEMLibrary.bootstrap(NetworkTypes.MAIN_NET);
   styleUrls: ['./alltransaction.component.css'],
   providers: [NgbModal],
   styles: [`
+    .dark-modal {
+      width: 100%;
+    }
     .dark-modal .modal-content {
       background-color: #292b2c;
       color: white;
-      width:100%;
+      width: 100%;
     }
     .dark-modal .close {
       color: white;
@@ -46,7 +49,7 @@ export class AlltransactionComponent implements OnInit {
 
   decodeMessage(trans) {
     this.data = { 'sender': trans.signer.publicKey, 'receipt': this.privatekey, 'swift': trans.message.payload };
-    this.http.post('http://localhost:8013/nemswiftsvc/transaction/decode', this.data)
+    this.http.post('https://swift-nem-bc.herokuapp.com/nemswiftsvc/transaction/decode', this.data)
       .subscribe(data => {
         this.decodedMessage = data['decodedMessage'];
       });
@@ -64,7 +67,7 @@ export class AlltransactionComponent implements OnInit {
 
   open(content, trans) {
     this.decodeMessage(trans);
-    this.modalService.open(content,{size:'lg'}).result.then((result) => {
+    this.modalService.open(content,{size:'lg', windowClass:'dark-modal'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

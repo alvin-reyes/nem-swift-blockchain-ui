@@ -1,8 +1,9 @@
-
-<div class="form-group">
+<div *ngIf="pageMessage != null" class="{{pageMessageClass}}">{{pageMessage}}</div>
+<div class="form-group" >
 	<label for="senderAddress">Sender Private Key</label> <input [(ngModel)]="sender" type="text"
 		class="form-control" id="senderAddress"
-		aria-describedby="senderAddressHelp" placeholder="Sender Public Key" required="required">
+		aria-describedby="senderAddressHelp" placeholder="Sender Public Key">
+		<small>All Swift Message Transactions are Secure, hence the private key is needed</small>
 </div>
 <div class="form-group">
 	<label for="senderAddress">Recipient Address</label> <input

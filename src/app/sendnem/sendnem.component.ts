@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AccountHttp, Address } from 'nem-library';
 
@@ -20,9 +20,18 @@ export class SendnemComponent implements OnInit {
   recipientPublickKey: string;
   sender: string;
   swiftMessage: string;
-  constructor(private http: HttpClient) { }
+  pageMessage: string;
+  pageMessageClass: string;
+
+  @Input()
+  public alert: IAlert;
+
+  constructor(private http: HttpClient) {
+
+  }
 
   ngOnInit() {
+
   }
 
   sendNem() {
@@ -33,14 +42,30 @@ export class SendnemComponent implements OnInit {
 
       this.data = { 'sender': this.sender, 'receipt': this.recipientPublickKey, 'swift': this.swiftMessage };
 
-      this.http.post('http://localhost:8013/nemswiftsvc/transaction/send', this.data).subscribe(transdata => {
-        console.log(data);
-        this.data = {};
-//        this.recipient = '';
-//        this.sender = '';
-//        this.swiftMessage = '';
-      });
+      this.http.post('https://swift-nem-bc.herokuapp.com/nemswiftsvc/transaction/send', this.data)
+        .subscribe(transdata => {
+          this.data = {};
+        }, error => {
+          this.pageMessage = error;
+          this.pageMessageClass = 'alert alert-danger';
+        }, () => {
+          this.pageMessage = 'Transferred Successfully!';
+          this.pageMessageClass = 'alert alert-success';
+        });
 
+    }, error => {
+      this.pageMessage = error.message;
+      this.pageMessageClass = 'alert alert-danger';
+    }, () => {
+      this.pageMessage = 'Transfered Successfully!';
+      this.pageMessageClass = 'alert alert-success';
     });
   }
+
+}
+
+export interface IAlert {
+  id: number;
+  type: string;
+  message: string;
 }

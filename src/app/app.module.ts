@@ -7,12 +7,14 @@ import { SendnemComponent } from './sendnem/sendnem.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlltransactionComponent } from './alltransaction/alltransaction.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MultisigComponent } from './multisig/multisig.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SendnemComponent,
-    AlltransactionComponent
+    AlltransactionComponent,
+    MultisigComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +33,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       {
         path: 'transaction',
         component: AlltransactionComponent
+      },
+      {
+        path: 'multisig',
+        component: MultisigComponent
       }
     ])
   ],
